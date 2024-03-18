@@ -1,0 +1,32 @@
+version: '3'
+services:
+  backend:
+    build: ./server
+    deploy:
+      replicas: 3
+    networks:
+      - loadbalancing
+  # backend-2:
+  #   build: ./server
+  #   networks:
+  #     - loadbalancing
+  # backend-3:
+  #   build: ./server
+  #   networks:
+  #     - loadbalancing
+  
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "8080:8080"
+
+    networks:
+      - loadbalancing
+    depends_on:
+      - backend
+      # - backend-2
+      # - backend-3
+
+networks:
+  loadbalancing:
